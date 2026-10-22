@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">
+                <i class="fas fa-music"></i> Music Player
+            </h1>
+            <p class="subtitle">Your Personal Audio Experience</p>
+        </header>
+
+        <main class="player-wrapper">
+            <!-- Player Card -->
+            <div class="player-card">
+                <!-- Album Art -->
+                <div class="album-art-container">
+                    <div class="album-art" id="albumArt">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="visualizer">
+                        <div class="bar" style="--delay: 0s;"></div>
+                        <div class="bar" style="--delay: 0.1s;"></div>
+                        <div class="bar" style="--delay: 0.2s;"></div>
+                        <div class="bar" style="--delay: 0.3s;"></div>
+                        <div class="bar" style="--delay: 0.4s;"></div>
+                    </div>
+                </div>
+
+                <!-- Song Info -->
+                <div class="song-info">
+                    <h2 class="song-title" id="songTitle">Select a song</h2>
+                    <p class="artist-name" id="artistName">Unknown Artist</p>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="progress-container">
+                    <div class="time" id="currentTime">0:00</div>
+                    <div class="progress-bar-wrapper">
+                        <input 
+                            type="range" 
+                            class="progress-bar" 
+                            id="progressBar" 
+                            min="0" 
+                            max="100" 
+                            value="0"
+                        >
+                    </div>
+                    <div class="time" id="duration">0:00</div>
+                </div>
+
+                <!-- Controls -->
+                <div class="controls">
+                    <!-- Left Controls -->
+                    <div class="control-group">
+                        <button class="btn btn-control" id="btnShuffle" title="Shuffle">
+                            <i class="fas fa-random"></i>
+                        </button>
+                        <button class="btn btn-control" id="btnRepeat" title="Repeat">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                    </div>
+
+                    <!-- Center Controls -->
+                    <div class="control-group center">
+                        <button class="btn btn-control btn-prev" id="btnPrevious" title="Previous (P)">
+                            <i class="fas fa-step-backward"></i>
+                        </button>
+                        <button class="btn btn-play" id="btnPlayPause" title="Play/Pause (Space)">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button class="btn btn-control btn-next" id="btnNext" title="Next (N)">
+                            <i class="fas fa-step-forward"></i>
+                        </button>
+                    </div>
+
+                    <!-- Right Controls -->
+                    <div class="control-group">
+                        <button class="btn btn-control" id="btnPlaylist" title="Show Playlist">
+                            <i class="fas fa-list"></i>
+                        </button>
+                        <button class="btn btn-control" id="btnTheme" title="Toggle Theme">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Volume Control -->
+                <div class="volume-container">
+                    <i class="fas fa-volume-down"></i>
+                    <input 
+                        type="range" 
+                        class="volume-slider" 
+                        id="volumeSlider" 
+                        min="0" 
+                        max="100" 
+                        value="70"
+                    >
+                    <i class="fas fa-volume-up"></i>
+                </div>
+
+                <!-- Playback Speed -->
+                <div class="speed-container">
+                    <label for="speedControl">Speed:</label>
+                    <select id="speedControl" class="speed-control">
+                        <option value="0.5">0.5x</option>
+                        <option value="0.75">0.75x</option>
+                        <option value="1" selected>1x</option>
+                        <option value="1.25">1.25x</option>
+                        <option value="1.5">1.5x</option>
+                        <option value="2">2x</option>
+                    </select>
+                </div>
+
+                <!-- Autoplay Toggle -->
+                <div class="autoplay-container">
+                    <label class="autoplay-label">
+                        <input type="checkbox" id="autoplayToggle" class="autoplay-checkbox">
+                        <span>Autoplay</span>
+                    </label>
+                </div>
+
+                <!-- Keyboard Info -->
+                <div class="keyboard-info">
+                    <p><strong>⌨️ Keyboard Shortcuts:</strong></p>
+                    <div class="shortcuts">
+                        <span><strong>Space</strong> - Play/Pause</span>
+                        <span><strong>N</strong> - Next</span>
+                        <span><strong>P</strong> - Previous</span>
+                        <span><strong>↑</strong> - Volume Up</span>
+                        <span><strong>↓</strong> - Volume Down</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Playlist Panel -->
+            <div class="playlist-panel" id="playlistPanel">
+                <div class="playlist-header">
+                    <h3>Playlist</h3>
+                    <button class="btn-close-playlist" id="btnClosePlaylist">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="playlist-controls">
+                    <button class="btn btn-small" id="btnAddSong">
+                        <i class="fas fa-plus"></i> Add Song
+                    </button>
+                    <button class="btn btn-small" id="btnClearPlaylist">
+                        <i class="fas fa-trash"></i> Clear
+                    </button>
+                </div>
+                <div class="playlist-list" id="playlistList">
+                    <!-- Playlist items will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Add Song Modal -->
+            <div class="modal" id="addSongModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>Add Song to Playlist</h3>
+                        <button class="btn-close-modal" id="btnCloseModal">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="songUrl">Song URL:</label>
+                            <input 
+                                type="text" 
+                                id="songUrl" 
+                                placeholder="https://example.com/song.mp3"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="songName">Song Title:</label>
+                            <input 
+                                type="text" 
+                                id="songName" 
+                                placeholder="Song Title"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="artistName">Artist Name:</label>
+                            <input 
+                                type="text" 
+                                id="artistNameInput" 
+                                placeholder="Artist Name"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="albumCover">Album Cover (URL):</label>
+                            <input 
+                                type="text" 
+                                id="albumCover" 
+                                placeholder="https://example.com/cover.jpg"
+                            >
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" id="btnCancelAdd">Cancel</button>
+                        <button class="btn btn-primary" id="btnConfirmAdd">Add Song</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Audio Element -->
+            <audio id="audioPlayer"></audio>
+
+            <!-- Toast Notification -->
+            <div class="toast" id="toast"></div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2026 Music Player. Enjoy your music!</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
